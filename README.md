@@ -105,10 +105,10 @@ The best-fit cosmological parameters obtained at the 68% confidence level are pr
 
 ## Authors
 
-- Khush Shaw
-- Himanshu Aggarwal
-- Sudarshan Kumar
 - Ashish Patel
+- Himanshu Aggarwal
+- Khush Shaw
+- Sudarshan Kumar
 
 ## Acknowledgements
 
