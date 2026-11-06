@@ -2,182 +2,97 @@
 
 ## Overview
 
-This project investigates the **Hubble Tension** — the discrepancy between early-universe and late-universe measurements of the Hubble constant.
+This project investigates the **Hubble Tension**, the discrepancy between early-universe and late-universe measurements of the Hubble constant.
 
-We explore an extension of the standard $\Lambda$CDM cosmological model by introducing an additional redshift-dependent barotropic fluid, whose energy density evolves as $(1+z)^n$.
+The study explores an extension of the standard Lambda-CDM cosmological model by introducing an additional redshift-dependent barotropic fluid.
 
-Using Type Ia Supernova (SNe Ia) observations from the **Pantheon dataset**, we perform cosmological parameter estimation through Bayesian inference and Markov Chain Monte Carlo (MCMC) sampling using Python's `emcee` library.
+Using Type Ia Supernova (SNe Ia) observations from the **Pantheon dataset**, cosmological parameters are constrained through Bayesian inference and Markov Chain Monte Carlo (MCMC) techniques using Python's `emcee` library.
+
+The primary objective is to investigate whether this extended cosmological model can reproduce Hubble constant values consistent with local-universe observations.
 
 ## Objectives
 
 - Investigate the Hubble Tension between early- and late-universe measurements.
-- Study an extended $\Lambda$CDM cosmological model.
-- Analyse Type Ia Supernova observational data.
+- Explore an extended Lambda-CDM cosmological model.
+- Analyse observational data from Type Ia Supernovae.
 - Implement Bayesian inference and MCMC parameter estimation.
-- Constrain cosmological parameters and examine their posterior distributions.
+- Estimate cosmological parameters and examine their posterior distributions.
 
-## 1. Cosmological Model
+## Cosmological Model
 
-The standard $\Lambda$CDM model is extended by introducing an additional energy-density component:
+The standard Lambda-CDM model is extended by introducing an additional energy component whose density evolves with redshift according to a power-law dependence.
 
-$$
-\Omega_n(z)=\Omega_{n0}(1+z)^n
-$$
+Two values of the model parameter are investigated:
 
-The modified Friedmann equation is:
+- n = 1
+- n = 2.5
 
-$$
-H(z)=H_0\sqrt{
-\begin{aligned}
-&\Omega_{r0}(1+z)^4\\
-&+\Omega_{m0}(1+z)^3\\
-&+\Omega_{k0}(1+z)^2\\
-&+\Omega_\Lambda\\
-&+\Omega_{n0}(1+z)^n
-\end{aligned}
-}
-$$
+The analysis considers the effects of this additional component on the expansion history of the universe and the resulting cosmological parameter estimates.
 
-where:
-
-- $H_0$ is the present-day Hubble constant.
-- $\Omega_{r0}$ is the radiation density parameter.
-- $\Omega_{m0}$ is the matter density parameter.
-- $\Omega_{k0}$ is the curvature density parameter.
-- $\Omega_\Lambda$ is the dark energy density parameter.
-- $\Omega_{n0}$ is the additional energy-density parameter.
-- $n$ determines the redshift dependence of the additional component.
-
-The normalization condition is:
-
-$$
-\Omega_{r0}+\Omega_{m0}+\Omega_{k0}
-+\Omega_\Lambda+\Omega_{n0}=1
-$$
-
-Two discrete values of $n$ are investigated:
-
-- $n=1$
-- $n=2.5$
-
-## 2. Dataset
+## Dataset
 
 **Pantheon Type Ia Supernova Dataset**
 
-The Pantheon dataset provides observational measurements of Type Ia Supernovae, which are used as standard candles to determine cosmological distances.
+The Pantheon dataset provides observational measurements of Type Ia Supernovae, which serve as standard candles for estimating cosmological distances.
 
-Dataset: [Pantheon – GitHub](https://github.com/dscolnic/Pantheon)
+**Dataset source:**  
+https://github.com/dscolnic/Pantheon
 
-The analysis also incorporates a Gaussian prior from CMB constraints:
+The analysis also incorporates a Gaussian prior based on Cosmic Microwave Background (CMB) constraints.
 
-$$
-H_0^2\Omega_{m0}=1424.18\pm31.37
-$$
+## Methodology
 
-The other priors used are:
+The analysis follows these major steps:
 
-$$
-8000\leq \frac{H_0^2}{\Omega_{m0}}\leq22000
-$$
+1. **Data Preparation:** Extracting and processing observational data from the Pantheon dataset.
+2. **Cosmological Modelling:** Implementing the extended Friedmann model and calculating theoretical luminosity distances.
+3. **Likelihood Analysis:** Comparing theoretical predictions with observed luminosity distances using chi-square statistics.
+4. **Bayesian Inference:** Defining prior distributions and constructing posterior probability distributions.
+5. **MCMC Sampling:** Implementing the affine-invariant ensemble sampler using the `emcee` Python library.
+6. **Parameter Estimation:** Analysing posterior distributions, confidence intervals, and parameter correlations using corner plots.
 
-$$
-0\leq\Omega_\Lambda\leq1
-$$
+The final analysis uses 15,000 sampling points and 20 walkers.
 
-## 3. Methodology
+## Results
 
-The analysis follows these steps:
+The best-fit cosmological parameters obtained at the 68% confidence level are presented below.
 
-**1. Data Preparation**
-
-Extract and process observational data from the Pantheon dataset.
-
-**2. Cosmological Modelling**
-
-Implement the modified Friedmann equation and calculate theoretical luminosity distances.
-
-**3. Likelihood Analysis**
-
-Compare theoretical predictions with observed luminosity distances using the chi-square statistic:
-
-$$
-\chi^2(\Theta)=
-\sum_{i=1}^{N}
-\left[
-\frac{
-d_L^{\mathrm{th}}(z_i,\Theta)
--
-d_L^{\mathrm{obs}}(z_i)
-}{
-\sigma_{d_L}(z_i)
-}
-\right]^2
-$$
-
-where $\Theta$ represents the cosmological parameters.
-
-**4. Bayesian Inference**
-
-Construct the posterior probability distribution using:
-
-$$
-P(\Theta\mid D)\propto
-\mathcal{L}(D\mid\Theta)\,P(\Theta)
-$$
-
-where $\mathcal{L}$ is the likelihood and $P(\Theta)$ is the prior distribution.
-
-**5. MCMC Sampling**
-
-Implement the affine-invariant ensemble sampler using the `emcee` Python library.
-
-**6. Parameter Estimation**
-
-Analyse posterior distributions, confidence intervals, and parameter correlations using corner plots.
-
-## 4. Results
-
-The analysis was performed using **15,000 sampling points and 20 walkers**.
-
-The best-fit cosmological parameters at the 68% confidence level are:
-
-### Case I: $n=1$
+### Case I: n = 1
 
 | Parameter | Best-fit value |
-|:---|:---|
-| $H_0$ (km/s/Mpc) | $74.86\pm0.26$ |
-| $\Omega_{m0}$ | $0.255\pm0.006$ |
-| $\Omega_{n0}$ | $0.229^{+0.060}_{-0.057}$ |
-| $\Omega_\Lambda$ | $0.569^{+0.056}_{-0.059}$ |
+|:---|---:|
+| Hubble Constant (H0) | 74.86 ± 0.26 |
+| Matter Density (Omega_m0) | 0.255 ± 0.006 |
+| Additional Component (Omega_n0) | 0.229 (+0.060 / -0.057) |
+| Dark Energy Density (Omega_Lambda) | 0.569 (+0.056 / -0.059) |
 
-### Case II: $n=2.5$
+### Case II: n = 2.5
 
 | Parameter | Best-fit value |
-|:---|:---|
-| $H_0$ (km/s/Mpc) | $74.65^{+0.23}_{-0.24}$ |
-| $\Omega_{m0}$ | $0.256\pm0.006$ |
-| $\Omega_{n0}$ | $-0.024\pm0.017$ |
-| $\Omega_\Lambda$ | $0.636\pm0.017$ |
+|:---|---:|
+| Hubble Constant (H0) | 74.65 (+0.23 / -0.24) |
+| Matter Density (Omega_m0) | 0.256 ± 0.006 |
+| Additional Component (Omega_n0) | -0.024 ± 0.017 |
+| Dark Energy Density (Omega_Lambda) | 0.636 ± 0.017 |
 
 ### Key Observations
 
-- The estimated Hubble constant is approximately $74.7$ km/s/Mpc for both models.
-- The results are consistent with the late-universe SH0ES measurement.
-- Posterior distributions provide constraints on the cosmological parameters and their correlations.
-- For $n=2.5$, the additional energy-density parameter becomes negative, raising questions about the physical consistency of the model.
+- The estimated Hubble constant is approximately 74.7 km/s/Mpc for both models.
+- The results are consistent with late-universe measurements reported by the SH0ES collaboration.
+- Posterior distributions provide constraints on cosmological parameters and their correlations.
+- For n = 2.5, the additional energy-density parameter becomes negative, raising questions about the physical consistency of the model.
 
-## 5. Tools and Technologies
+## Tools and Technologies
 
 | Technology | Application |
 |:---|:---|
 | Python | Computational analysis |
-| NumPy | Numerical calculations |
-| SciPy | Scientific computation |
-| EMCEE | MCMC ensemble sampling |
+| EMCEE | Markov Chain Monte Carlo sampling |
 | Plotly | Data visualisation |
-| Statistical Methods | Monte Carlo simulation, likelihood analysis and Bayesian inference |
+| Monte Carlo Methods | Statistical simulations |
+| Bayesian Inference | Cosmological parameter estimation |
 
-## 6. References
+## References
 
 1. D. Kumar, D. Choudhury, and D. Nandi, *Exploring the Hubble Tension: A Novel Approach through Cosmological Observations* (2023).  
    https://doi.org/10.48550/arXiv.2310.03509
